@@ -1,0 +1,41 @@
+spring:
+  application:
+    name:
+      wise-task-event
+  security:
+    jwt:
+      public-key: classpath:certs/public.pem
+  r2dbc:
+    username: ${EVENT_DB_USER:wise_task_event}
+    password: ${EVENT_DB_PASSWORD:wise_task_event}
+    url: r2dbc:postgresql://${EVENT_DB_APP_NAME:localhost}:${EVENT_DB_PORT:5433}/${EVENT_DB:wise_task_event}
+    pool:
+      enabled: true
+  cache:
+    type: caffeine
+    caffeine:
+      spec: ${CACHE_SPEC:initialCapacity=100,maximumSize=1000,expireAfterAccess=30s}
+    cache-names: statistics
+  liquibase:
+    url: jdbc:postgresql://${EVENT_DB_APP_NAME:localhost}:${EVENT_DB_PORT:5433}/${EVENT_DB:wise_task_event}
+    user: ${EVENT_DB_USER:wise_task_event}
+    password: ${EVENT_DB_PASSWORD:wise_task_event}
+    change-log: classpath:liquibase/change-log-master.yaml
+    enabled: true
+
+logging:
+  level:
+    ru.leti.wise.task.event: ${EVENT_LOGGING_LEVEL:INFO}
+    org.springframework.security: ${EVENT_LOGGING_LEVEL:INFO}
+    org.springframework.web: ${EVENT_LOGGING_LEVEL:INFO}
+
+grpc:
+  server:
+    port: ${EVENT_GRPC_PORT:6569}
+
+wise-task-event:
+  statistics:
+    time-to-live: ${TIME_TO_LIVE_SECONDS:30}
+
+server:
+  port: ${EVENT_PORT:8085}
