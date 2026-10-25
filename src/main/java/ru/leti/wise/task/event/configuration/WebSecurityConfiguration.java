@@ -76,16 +76,4 @@ public class WebSecurityConfiguration {
 
 
 
-    @Bean
-    @Order(2)
-    public SecurityWebFilterChain grpcSecurity(ServerHttpSecurity http) {
-        return http
-                .securityMatcher(ServerWebExchangeMatchers.pathMatchers("/grpc/**"))
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(exchanges -> exchanges.anyExchange().permitAll())
-                .build();
-    }
-
-
 }

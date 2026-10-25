@@ -22,7 +22,7 @@ public class EventController {
     @PostMapping("/create")
     public Mono<Void> createEvent(@AuthenticationPrincipal Jwt userToken,
                                   @RequestBody @Valid CreateEventRequest request){
-        request.setUserId(UUID.fromString(userToken.getClaim("id")));
+        request.setUserId(UUID.fromString(userToken.getClaim("sub")));
         return eventService.createEvent(request);
     }
 

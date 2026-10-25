@@ -3,8 +3,8 @@ package ru.leti.wise.task.event.service.grpc;
 import io.grpc.Status;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.devh.boot.grpc.server.advice.GrpcAdvice;
-import net.devh.boot.grpc.server.advice.GrpcExceptionHandler;
+import org.springframework.grpc.server.advice.GrpcAdvice;
+import org.springframework.grpc.server.advice.GrpcExceptionHandler;
 import org.springframework.stereotype.Component;
 import ru.leti.wise.task.event.exception.BusinessException;
 

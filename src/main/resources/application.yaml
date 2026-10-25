@@ -2,6 +2,9 @@ spring:
   application:
     name:
       wise-task-event
+  grpc:
+    server:
+      port: ${EVENT_GRPC_PORT:6569}
   security:
     jwt:
       public-key: classpath:certs/public.pem
@@ -29,13 +32,35 @@ logging:
     org.springframework.security: ${EVENT_LOGGING_LEVEL:INFO}
     org.springframework.web: ${EVENT_LOGGING_LEVEL:INFO}
 
-grpc:
-  server:
-    port: ${EVENT_GRPC_PORT:6569}
-
 wise-task-event:
   statistics:
     time-to-live: ${TIME_TO_LIVE_SECONDS:30}
 
 server:
   port: ${EVENT_PORT:8085}
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://${TEMPO_HOST:localhost}:${TEMPO_PORT:4318}/v1/traces
+  otlp:
+    metrics:
+      export:
+        enabled: false # prometheus will do it
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true

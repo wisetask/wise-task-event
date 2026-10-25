@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 
 import java.sql.Timestamp;
@@ -12,7 +13,7 @@ import java.util.UUID;
 @Value
 @Builder
 @AllArgsConstructor
-public class Session {
+public class Session implements Persistable<UUID> {
     @Id
     UUID id;
     @Column("user_id")
@@ -21,4 +22,9 @@ public class Session {
     UUID taskId;
     @Column("created_at")
     Timestamp createdAt;
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 }

@@ -33,7 +33,7 @@ public class EventService {
                 .flatMap(eventType -> findSession(createEventRequest.getUserId(), createEventRequest.getTaskId())
                         .flatMap(session -> {
                             var event = Event.builder()
-//                                    .id(UUID.randomUUID())
+                                    .id(UUID.randomUUID())
                                     .sessionId(session.getId())
                                     .eventEntityId(createEventRequest.getEventEntityId())
                                     .eventTypeId(eventType.getId())
@@ -47,6 +47,7 @@ public class EventService {
         return sessionRepository.findByUserIdAndTaskId(userId, taskId)
                 .switchIfEmpty(
                         sessionRepository.save(Session.builder()
+                                .id(UUID.randomUUID())
                                 .createdAt(Timestamp.valueOf(LocalDateTime.now()))
                                 .taskId(taskId)
                                 .userId(userId)
