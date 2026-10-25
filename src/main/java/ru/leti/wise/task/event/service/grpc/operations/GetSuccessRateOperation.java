@@ -67,7 +67,9 @@ public class GetSuccessRateOperation {
         }
         var successData = getSumOperation.execute(successRequest.build(), false);
         var wrongData = getSumOperation.execute(wrongRequest.build(), false);
-        statisticEntity.setValue(successData.getValue() == 0 ? 0 : 100 * successData.getValue() / (successData.getValue() + wrongData.getValue()));
+        float successValue = (float) successData.getValue();
+        float wrongValue = (float) wrongData.getValue();
+        statisticEntity.setValue(successValue == 0 ? 0.0f : 100.0f * successValue / (successValue + wrongValue));
         statisticEntity.setUpdatedAt(Instant.now());
         var response = statisticMapper.toResponse(statisticRepository.save(statisticEntity).block());
         return response;
