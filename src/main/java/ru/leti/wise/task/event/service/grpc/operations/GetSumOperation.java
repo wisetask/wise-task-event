@@ -29,6 +29,10 @@ public class GetSumOperation {
 
 
     public Statistic.StatisticResponse execute(Statistic.StatisticRequest request, Boolean cached) {
+        return execute(request, cached, true);
+    }
+
+    public Statistic.StatisticResponse execute(Statistic.StatisticRequest request, Boolean cached, boolean persist) {
 
         var statisticEntity = statisticEvaluator
                 .findStatistic(request)
@@ -58,6 +62,9 @@ public class GetSumOperation {
                 statisticEntity.getUserId()).collectList().block();
         statisticEntity.setValue(statisticEntity.getValue() + extractTotalSum(result));
         statisticEntity.setUpdatedAt(Instant.now());
+        if (!persist) {
+            return statisticMapper.toResponse(statisticEntity);
+        }
         return statisticMapper.toResponse(
                 statisticRepository.save(statisticEntity).block()
         );

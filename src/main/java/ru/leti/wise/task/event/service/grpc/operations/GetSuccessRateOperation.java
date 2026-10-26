@@ -65,8 +65,8 @@ public class GetSuccessRateOperation {
             successRequest.setTaskId(request.getTaskId());
             wrongRequest.setTaskId(request.getTaskId());
         }
-        var successData = getSumOperation.execute(successRequest.build(), false);
-        var wrongData = getSumOperation.execute(wrongRequest.build(), false);
+        var successData = getSumOperation.execute(successRequest.build(), false, false);
+        var wrongData = getSumOperation.execute(wrongRequest.build(), false, false);
         float successValue = (float) successData.getValue();
         float wrongValue = (float) wrongData.getValue();
         statisticEntity.setValue(successValue == 0 ? 0.0f : 100.0f * successValue / (successValue + wrongValue));
